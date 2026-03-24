@@ -39,3 +39,10 @@
 
 # debug information files
 *.dwo
+
+
+# remove temp qt file 
+.qtc_clangd/
+
+#remove build files
+build/

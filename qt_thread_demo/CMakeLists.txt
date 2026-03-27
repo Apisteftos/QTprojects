@@ -17,6 +17,7 @@ qt_add_executable(qt_thread_demo
     worker.cpp
     threadcontroller.h
     threadcontroller.cpp
+    README.md
 )
 
 target_link_libraries(qt_thread_demo PRIVATE

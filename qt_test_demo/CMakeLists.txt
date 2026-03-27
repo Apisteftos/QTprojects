@@ -24,6 +24,7 @@ qt_add_executable(qt_test_demo
     # Test suites (header-only)
     test_noterepository.h
     test_notemodel.h
+    README.md
 )
 
 target_link_libraries(qt_test_demo PRIVATE

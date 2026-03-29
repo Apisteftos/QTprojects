@@ -1,0 +1,81 @@
+# ============================================================
+# CI/CD Pipeline for QTprojects
+# https://github.com/Apisteftos/QTprojects
+#
+# Triggers:
+#   - Every push to main branch
+#   - Every pull request to main branch
+#
+# What it does:
+#   1. Spins up Ubuntu runner (free GitHub-hosted)
+#   2. Installs Qt6 + build tools
+#   3. Builds qt_cicd_demo (the app)
+#   4. Builds qt_cicd_demo_tests (the test suite)
+#   5. Runs all tests headless (no display needed)
+#   6. Reports pass ✅ or fail ❌
+# ============================================================
+
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    name: Build & Test (Ubuntu + Qt6)
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── Step 1: Checkout code ─────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── Step 2: Install Qt6 + build tools ────────────────
+      - name: Install Qt6 and build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            qt6-base-dev \
+            libqt6sql6-sqlite \
+            cmake \
+            build-essential \
+            ninja-build
+
+      # ── Step 3: Build the app ─────────────────────────────
+      - name: Build qt_cicd_demo (app)
+        run: |
+          cd qt_cicd_demo
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --parallel
+
+      # ── Step 4: Build the tests ───────────────────────────
+      - name: Build qt_cicd_demo tests
+        run: |
+          cd qt_cicd_demo/tests
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --parallel
+
+      # ── Step 5: Run tests (headless) ──────────────────────
+      - name: Run unit tests
+        run: |
+          cd qt_cicd_demo/tests/build
+          QT_QPA_PLATFORM=offscreen ./qt_cicd_demo_tests -v2
+
+      # ── Step 6: Run qt_test_demo tests too ───────────────
+      - name: Install Qt6 SQL for qt_test_demo
+        run: |
+          sudo apt-get install -y libqt6sql6-sqlite
+
+      - name: Build qt_test_demo
+        run: |
+          cd qt_test_demo
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --parallel
+
+      - name: Run qt_test_demo tests
+        run: |
+          cd qt_test_demo/build
+          QT_QPA_PLATFORM=offscreen ./qt_test_demo -v2

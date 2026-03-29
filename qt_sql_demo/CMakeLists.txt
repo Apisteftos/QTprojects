@@ -22,6 +22,7 @@ qt_add_executable(qt_sql_demo
     noteview.cpp
     notepresenter.h
     notepresenter.cpp
+    README.md
 )
 
 target_link_libraries(qt_sql_demo PRIVATE

@@ -1,0 +1,19 @@
+<RCC>
+    <qresource>
+        <file>Qt_test_design.qmlproject</file>
+        <file>Qt_test_design/Constants.qml</file>
+        <file>Qt_test_design/EventListModel.qml</file>
+        <file>Qt_test_design/EventListSimulator.qml</file>
+        <file>Qt_test_design/qmldir</file>
+        <file>Qt_test_designContent/AboutPage.qml</file>
+        <file>Qt_test_designContent/App.qml</file>
+        <file>Qt_test_designContent/ChartCanvas.qml</file>
+        <file>Qt_test_designContent/ChartsPage.qml</file>
+        <file>Qt_test_designContent/DashboardPage.qml</file>
+        <file>Qt_test_designContent/Main.qml</file>
+        <file>Qt_test_designContent/MetricCard.qml</file>
+        <file>Qt_test_designContent/Screen01.ui.qml</file>
+        <file>Qt_test_designContent/SettingsPage.qml</file>
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
+</RCC>

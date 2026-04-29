@@ -373,5 +373,5 @@ cmake --build .
 | Find a bug | Search all files | Bug is in exactly one layer |
 | New developer | Reads 1000-line mainwindow.cpp | Reads 3 focused files |
 
-For a project like MCXApp / MCX where the backend logic is complex,
+For a project like Mission Critical Client / MCX where the backend logic is complex,
 MVP ensures the communication logic never gets mixed with widget code.

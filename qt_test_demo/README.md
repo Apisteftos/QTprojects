@@ -297,7 +297,7 @@ operate under strict quality standards:
 | DO-178C | Aerospace software | Unit tests with coverage |
 | ISO 26262 | Automotive safety | Test evidence per ASIL level |
 | IEC 61508 | Industrial safety | Verified and validated software |
-| BOS-Network/MCXApp | Mission critical comms | Regression test suites |
+| Mission Critical | Mission critical comms | Regression test suites |
 
 Having unit tests in your portfolio signals you understand
 production-quality software — not just demo code.

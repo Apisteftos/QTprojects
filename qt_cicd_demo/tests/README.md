@@ -8,7 +8,7 @@ from Qt and mission-critical software development.
 
 ## 1. What Problem Does CI/CD Solve?
 
-Imagine a team of 5 developers working on the MCXApp MCX backend.
+Imagine a team of 5 developers working on the Mission Critical Client MCX backend.
 Without CI/CD, this happens every week:
 
 ```mermaid
@@ -88,7 +88,7 @@ automated deployment to production is rare (human approval required).
 
 ## 3. Real World — How Teams Actually Use CI/CD
 
-### Your Context: MyCompany / MCXApp
+### Your Context: Company X / Mission Critical Client
 
 ```mermaid
 flowchart TD
@@ -204,7 +204,7 @@ flowchart LR
 
     subgraph Cannot Test in CI
         F[Real CAN bus hardware]
-        G[Real BOS-Network network]
+        G[Real Mission Critical Network network]
         H[GUI visual rendering]
         I[RTP audio quality]
     end
@@ -314,7 +314,7 @@ immediately when visiting a GitHub repo.
 | **ISO 26262** | Automotive — Bosch | ASIL-rated test suites, regression |
 | **AQAP-2110** | NATO defence — Rheinmetall | Build reproducibility, test reports |
 | **IEC 61508** | Industrial — HENSOLDT | Verified test results per SIL level |
-| **3GPP / BOS-Network** | MCX — MyCompany | Protocol conformance testing |
+| **3GPP / Mission Critical Network** | MCX — Company X | Protocol conformance testing |
 
 In all of these — automated testing is not optional.
 CI/CD is the infrastructure that makes it practical at scale.

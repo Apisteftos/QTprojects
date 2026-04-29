@@ -351,8 +351,8 @@ flowchart TD
 
 | Domain | Protocol | Why |
 |---|---|---|
-| MCX/MCPTT signaling (MCXApp) | TCP/TLS | SIP must be reliable — call setup can't be lost |
-| MCX/MCPTT audio (MCXApp) | UDP | RTP audio — latency over reliability |
+| MCX/MCPTT signaling (Mission Critical Client) | TCP/TLS | SIP must be reliable — call setup can't be lost |
+| MCX/MCPTT audio (Mission Critical Client) | UDP | RTP audio — latency over reliability |
 | Radar data stream | UDP | High rate, real-time — old frames are useless |
 | SCADA sensor telemetry | UDP | High frequency, tolerable loss |
 | Industrial PLC commands | TCP | Commands must arrive — machine safety |

@@ -87,21 +87,7 @@ QCOMPARE(spy.first().first().toInt(), 42); // first arg = 42
 
 ---
 
-## 4. Project Structure
-
-```
-qt_test_demo/
-├── CMakeLists.txt
-├── main.cpp                   # runs all test suites
-├── noterepository.h/.cpp      # class under test (from qt_sql_demo)
-├── notemodel.h/.cpp           # class under test (from qt_sql_demo)
-├── test_noterepository.h      # 20 tests for NoteRepository
-└── test_notemodel.h           # 20 tests for NoteModel
-```
-
----
-
-## 5. Test Architecture
+## 4. Test Architecture
 
 ```mermaid
 flowchart TD
@@ -132,7 +118,7 @@ flowchart TD
 
 ---
 
-## 6. In-Memory Database — Key Concept
+## 5. In-Memory Database — Key Concept
 
 Every test gets a **fresh isolated database** via SQLite's `:memory:` path:
 
@@ -162,7 +148,7 @@ void cleanup() {
 
 ---
 
-## 7. Test Lifecycle
+## 6. Test Lifecycle
 
 ```mermaid
 sequenceDiagram
@@ -180,7 +166,7 @@ sequenceDiagram
 
 ---
 
-## 8. What's Tested
+## 7. What's Tested
 
 ### TestNoteRepository (20 tests)
 
@@ -230,7 +216,7 @@ sequenceDiagram
 
 ---
 
-## 9. Running the Tests
+## 8. Running the Tests
 
 **In Qt Creator:**
 - `Ctrl+R` runs the test executable
@@ -268,7 +254,7 @@ Totals: 20 passed, 0 failed, 0 skipped
 
 ---
 
-## 10. CMakeLists — Test Module
+## 9. CMakeLists — Test Module
 
 ```cmake
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets Sql Test)
@@ -287,24 +273,23 @@ add_test(NAME qt_test_demo COMMAND qt_test_demo)
 
 ---
 
-## 11. Why Testing Matters for Your Targets
+## 10. Why Testing Matters in Industry
 
-Defence and automotive companies (HENSOLDT, Rheinmetall, Airbus, Bosch)
-operate under strict quality standards:
+Companies in aerospace, defence, and automotive operate under strict
+quality standards:
 
 | Standard | Domain | Requires |
 |---|---|---|
 | DO-178C | Aerospace software | Unit tests with coverage |
 | ISO 26262 | Automotive safety | Test evidence per ASIL level |
 | IEC 61508 | Industrial safety | Verified and validated software |
-| Mission Critical | Mission critical comms | Regression test suites |
 
-Having unit tests in your portfolio signals you understand
-production-quality software — not just demo code.
+Unit tests show that a project is built like production-quality
+software — not just demo code.
 
 ---
 
-## 12. Create the Project in Qt Creator
+## 11. Create the Project in Qt Creator
 
 **Project type: Test Project → Qt Test Project**
 
@@ -330,7 +315,7 @@ Qt Creator generates a minimal test project with:
 
 ---
 
-## 13. Replace Generated Files
+## 12. Replace Generated Files
 
 After Qt Creator creates the project, replace everything with our files:
 
@@ -353,7 +338,7 @@ Then in Qt Creator:
 
 ---
 
-## 14. Expected Output
+## 13. Expected Output
 
 No window will appear — test results print directly to the
 **Application Output** panel in Qt Creator:
@@ -380,7 +365,7 @@ that shows results with green/red indicators per test case.
 
 ---
 
-## 15. Details Screen — Project and Test Information
+## 14. Details Screen — Project and Test Information
 
 After selecting **Test Project → Qt Test Project** and setting the name/location,
 Qt Creator shows this screen:

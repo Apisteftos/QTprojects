@@ -152,21 +152,7 @@ flowchart TD
 
 ---
 
-## 3. Project File Structure
-
-```
-qt_mvc_demo/
-├── CMakeLists.txt        # Build config
-├── main.cpp              # Entry point
-├── mainwindow.h/.cpp     # Shell — creates and owns the 3 layers
-├── taskmodel.h/.cpp      # MODEL — data + business logic
-├── taskview.h/.cpp       # VIEW  — widgets + user signals
-└── taskpresenter.h/.cpp  # PRESENTER — wires Model ↔ View
-```
-
----
-
-## 4. Layer Responsibilities
+## 3. Layer Responsibilities
 
 ### Model — `taskmodel.h / taskmodel.cpp`
 
@@ -233,7 +219,7 @@ This is the entire body of `MainWindow`. Clean.
 
 ---
 
-## 5. Class Diagram
+## 4. Class Diagram
 
 ```mermaid
 classDiagram
@@ -306,7 +292,7 @@ classDiagram
 
 ---
 
-## 6. Signal Flow — What Happens When User Adds a Task
+## 5. Signal Flow — What Happens When User Adds a Task
 
 ```mermaid
 sequenceDiagram
@@ -329,7 +315,7 @@ sequenceDiagram
 
 ---
 
-## 7. CMakeLists.txt — Key Points
+## 6. CMakeLists.txt — Key Points
 
 ```cmake
 set(PROJECT_SOURCES
@@ -346,7 +332,7 @@ generation for every file containing `Q_OBJECT`.
 
 ---
 
-## 8. Build & Run
+## 7. Build & Run
 
 **In Qt Creator:**
 1. Right-click project → **Run CMake**
@@ -363,7 +349,7 @@ cmake --build .
 
 ---
 
-## 9. Why MVP Over Plain Qt?
+## 8. Why MVP Over Plain Qt?
 
 | Situation | Without MVP | With MVP |
 |---|---|---|
@@ -373,5 +359,5 @@ cmake --build .
 | Find a bug | Search all files | Bug is in exactly one layer |
 | New developer | Reads 1000-line mainwindow.cpp | Reads 3 focused files |
 
-For a project like Mission Critical Client / MCX where the backend logic is complex,
+For a project where the backend logic is complex (for example a networked application),
 MVP ensures the communication logic never gets mixed with widget code.

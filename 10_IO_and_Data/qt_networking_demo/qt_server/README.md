@@ -16,30 +16,7 @@ Qt6 Network module is included in `qt6-base-dev` — no extra packages needed.
 
 ---
 
-## 2. Project Structure
-
-```
-qt_networking_demo/
-├── qt_server/                  ← background service (no UI)
-│   ├── CMakeLists.txt
-│   ├── main.cpp                # QCoreApplication entry point
-│   ├── tcpserver.h/.cpp        # QTcpServer — accepts connections
-│   ├── clienthandler.h/.cpp    # owns one QTcpSocket per client
-│   └── protocol.h              # shared JSON message builder/parser
-│
-└── qt_client/                  ← Qt Widgets chat UI (MVP)
-    ├── CMakeLists.txt
-    ├── main.cpp
-    ├── mainwindow.h/.cpp        # shell — creates MVP layers
-    ├── connectionmodel.h/.cpp  # MODEL — owns QTcpSocket
-    ├── clientview.h/.cpp       # VIEW  — UI widgets
-    ├── clientpresenter.h/.cpp  # PRESENTER — wires model ↔ view
-    └── protocol.h              # same protocol header (copy)
-```
-
----
-
-## 3. Architecture
+## 2. Architecture
 
 ```mermaid
 flowchart TD
@@ -71,14 +48,14 @@ flowchart TD
 
 ---
 
-## 4. The Protocol — JSON over TCP
+## 3. The Protocol — JSON over TCP
 
 Every message is a **JSON object followed by `\n`** (newline delimiter).
 
 ```
-{"type":"connect","name":"Kostas"}\n
-{"type":"message","from":"Kostas","text":"Hello"}\n
-{"type":"broadcast","from":"server","text":"Kostas joined"}\n
+{"type":"connect","name":"Alice"}\n
+{"type":"message","from":"Alice","text":"Hello"}\n
+{"type":"broadcast","from":"server","text":"Alice joined"}\n
 {"type":"ack","status":"ok"}\n
 {"type":"ping"}\n
 {"type":"pong"}\n
@@ -105,7 +82,7 @@ This pattern appears in every TCP application — HTTP, SMTP, Redis protocol.
 
 ---
 
-## 5. Key Qt Networking Classes
+## 4. Key Qt Networking Classes
 
 ### QTcpServer (server side)
 
@@ -146,7 +123,7 @@ return app.exec();  // blocks, handles all socket events
 
 ---
 
-## 6. Signal Flow
+## 5. Signal Flow
 
 ### Client connects to server
 
@@ -165,7 +142,7 @@ sequenceDiagram
     SRV->>SRV: onNewConnection() → creates ClientHandler
     SRV-->>CM: TCP connection established
     CM-->>CM: onConnected() → sends connect JSON
-    CM->>SRV: {"type":"connect","name":"Kostas"}
+    CM->>SRV: {"type":"connect","name":"Alice"}
     SRV->>SRV: sets client name, sends ack + broadcast
     SRV-->>CM: {"type":"ack","status":"welcome"}
     CM-->>CP: emit connected()
@@ -190,15 +167,15 @@ sequenceDiagram
     CP->>CM: sendMessage(text)
     CP->>CV: appendMessage("you", text)
     CP->>CV: clearInput()
-    CM->>SRV: {"type":"message","from":"Kostas","text":"Hello"}
+    CM->>SRV: {"type":"message","from":"Alice","text":"Hello"}
     SRV->>SRV: logs message, broadcasts to others
-    SRV-->>CM2: {"type":"broadcast","from":"Kostas","text":"Hello"}
+    SRV-->>CM2: {"type":"broadcast","from":"Alice","text":"Hello"}
     SRV-->>CM: {"type":"ack","status":"ok"}
 ```
 
 ---
 
-## 7. Create the Projects in Qt Creator
+## 6. Create the Projects in Qt Creator
 
 **Server — Qt Console Application:**
 1. `File → New Project → Application (Qt) → Qt Console Application`
@@ -213,7 +190,7 @@ sequenceDiagram
 
 ---
 
-## 8. Build & Run
+## 7. Build & Run
 
 **Step 1 — Build both in Qt Creator** (`Ctrl+B` for each)
 
@@ -244,7 +221,7 @@ Expected output:
 
 ---
 
-## 9. CMakeLists.txt — Network Module
+## 8. CMakeLists.txt — Network Module
 
 Both projects link `Qt6::Network`:
 
@@ -261,7 +238,7 @@ target_link_libraries(qt_client PRIVATE Qt6::Core Qt6::Widgets Qt6::Network)
 
 ---
 
-## 10. What This Covers
+## 9. What This Covers
 
 | Concept | Where |
 |---|---|

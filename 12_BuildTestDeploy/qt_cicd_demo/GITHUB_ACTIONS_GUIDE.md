@@ -210,10 +210,9 @@ https://github.com/Apisteftos/QTprojects/actions
 
 ---
 
-## 9. What the Green Badge Means to an Interviewer
+## 9. What the Green Badge Means
 
-When a recruiter or technical interviewer at HENSOLDT,
-Rheinmetall, or Airbus visits your GitHub repo and sees:
+When someone visits the repository and sees:
 
 ```
 [![CI] passing]
@@ -222,11 +221,11 @@ Rheinmetall, or Airbus visits your GitHub repo and sees:
 They understand immediately:
 - The code compiles on a clean Ubuntu system
 - The tests pass — not just on your machine
-- You work like a professional team, not a solo hobbyist
+- The project is maintained the way professional teams work
 - The repo is in a releasable state at all times
 
-This is the difference between a portfolio that gets read
-and one that gets skipped.
+This is the difference between a repository people trust
+and one they skip.
 
 ---
 

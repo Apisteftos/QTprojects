@@ -34,7 +34,7 @@ flowchart LR
 ```
 
 Perfect for desktop apps, embedded systems, and local data persistence.
-Used by Firefox, Android, iOS, Airbus avionics, and countless others.
+Used by Firefox, Android, iOS, and countless others.
 
 ---
 
@@ -73,22 +73,7 @@ flowchart TD
 
 ---
 
-## 4. Project File Structure
-
-```
-qt_sql_demo/
-├── CMakeLists.txt
-├── main.cpp                 # creates app data dir, opens MainWindow
-├── mainwindow.h/.cpp        # shell — creates all 4 layers
-├── noterepository.h/.cpp    # DATABASE layer — all SQL lives here
-├── notemodel.h/.cpp         # MODEL — cache + business logic
-├── noteview.h/.cpp          # VIEW  — two-panel notes UI
-└── notepresenter.h/.cpp     # PRESENTER — wires everything
-```
-
----
-
-## 5. Key Qt SQL Classes
+## 4. Key Qt SQL Classes
 
 ### QSqlDatabase — connection management
 
@@ -135,7 +120,7 @@ if (!query.exec()) {
 
 ---
 
-## 6. CRUD Operations
+## 5. CRUD Operations
 
 ```mermaid
 flowchart LR
@@ -206,7 +191,7 @@ query.exec();
 
 ---
 
-## 7. Schema Creation
+## 6. Schema Creation
 
 ```cpp
 query.exec(
@@ -225,7 +210,7 @@ Creates the table only if it doesn't already exist.
 
 ---
 
-## 8. Database Location
+## 7. Database Location
 
 The `.db` file is stored in the user's application data directory:
 
@@ -242,7 +227,7 @@ from all previous examples which lost data when closed.
 
 ---
 
-## 9. Signal Flow — Creating a Note
+## 8. Signal Flow — Creating a Note
 
 ```mermaid
 sequenceDiagram
@@ -270,7 +255,7 @@ sequenceDiagram
 
 ---
 
-## 10. Why Prepared Statements?
+## 9. Why Prepared Statements?
 
 Never build SQL with string concatenation:
 
@@ -291,7 +276,7 @@ directly to production server databases.
 
 ---
 
-## 11. CMakeLists — Sql Module
+## 10. CMakeLists — Sql Module
 
 ```cmake
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets Sql)
@@ -310,7 +295,7 @@ sudo apt install libqt6sql6-sqlite
 
 ---
 
-## 12. Build & Run
+## 11. Build & Run
 
 **In Qt Creator:**
 1. Copy all files into your `qt_sql_demo` project folder
@@ -327,7 +312,7 @@ cmake --build .
 
 ---
 
-## 13. What This Covers
+## 12. What This Covers
 
 | Concept | Where |
 |---|---|

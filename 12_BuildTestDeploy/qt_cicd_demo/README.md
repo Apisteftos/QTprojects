@@ -35,27 +35,7 @@ flowchart LR
 
 ---
 
-## 2. Project Structure
-
-```
-QTprojects/
-├── .github/
-│   └── workflows/
-│       └── ci.yml              ← GitHub Actions pipeline definition
-└── qt_cicd_demo/
-    ├── CMakeLists.txt          ← app build
-    ├── main.cpp
-    ├── mainwindow.h/.cpp       ← Qt Widgets calculator UI
-    ├── calculator.h/.cpp       ← business logic (class under test)
-    └── tests/
-        ├── CMakeLists.txt      ← test build (separate from app)
-        ├── main.cpp            ← QTest runner
-        └── test_calculator.h  ← 32 unit tests
-```
-
----
-
-## 3. The GitHub Actions Workflow
+## 2. The GitHub Actions Workflow
 
 The workflow file lives at `.github/workflows/ci.yml`.
 GitHub detects it automatically — no configuration needed.
@@ -141,7 +121,7 @@ The GitHub runner has no screen — this env var tells Qt to render offscreen.
 
 ---
 
-## 4. Adding the Badge to README
+## 3. Adding the Badge to README
 
 After the workflow runs at least once, add this to any README:
 
@@ -153,7 +133,7 @@ Shows ✅ green when all tests pass, ❌ red when any fail.
 
 ---
 
-## 5. What Gets Tested
+## 4. What Gets Tested
 
 32 tests across Calculator operations:
 
@@ -169,7 +149,7 @@ Shows ✅ green when all tests pass, ❌ red when any fail.
 
 ---
 
-## 6. Separate App and Test Builds
+## 5. Separate App and Test Builds
 
 The app and tests are built **separately** on purpose:
 
@@ -192,14 +172,13 @@ find_package(Qt6 REQUIRED COMPONENTS Core Test)
 
 ---
 
-## 7. Why CI/CD Matters for Your Targets
+## 6. Why CI/CD Matters
 
-| Company | Standard | CI/CD requirement |
+| Domain | Standard | CI/CD requirement |
 |---|---|---|
-| Airbus Defence | DO-178C | Automated test evidence required |
-| HENSOLDT | Internal quality | Build verification on every commit |
-| Rheinmetall | AQAP-2110 | Regression testing mandatory |
-| Bosch Automotive | ASPICE | Continuous integration required |
+| Aerospace | DO-178C | Automated test evidence required |
+| Defence | AQAP-2110 | Regression testing mandatory |
+| Automotive | ASPICE | Continuous integration required |
 | Any modern team | Best practice | Catches bugs before code review |
 
 Having a working CI pipeline in your public repo shows you work
@@ -208,7 +187,7 @@ ensuring it's always in a releasable state.
 
 ---
 
-## 8. Local Build & Run
+## 7. Local Build & Run
 
 **App:**
 ```bash

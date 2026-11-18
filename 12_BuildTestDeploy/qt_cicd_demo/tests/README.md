@@ -1,14 +1,14 @@
 # CI/CD — Complete Guide for C++ / Qt Developers
 
 A practical explanation of Continuous Integration and Continuous Delivery
-for embedded, defence, and industrial C++ projects — with real examples
-from Qt and mission-critical software development.
+for embedded, industrial, and safety-critical C++ projects — with examples
+from Qt development.
 
 ---
 
 ## 1. What Problem Does CI/CD Solve?
 
-Imagine a team of 5 developers working on the Mission Critical Client MCX backend.
+Imagine a team of 5 developers working on the same Qt application.
 Without CI/CD, this happens every week:
 
 ```mermaid
@@ -81,27 +81,27 @@ flowchart LR
 | **CD Delivery** | Tested build is packaged automatically | Most mature teams |
 | **CD Deployment** | Automatically deployed to production | Web/SaaS teams |
 
-For embedded and defence — CI is mandatory, CD Delivery is common,
+For embedded and safety-critical projects — CI is mandatory, CD Delivery is common,
 automated deployment to production is rare (human approval required).
 
 ---
 
 ## 3. Real World — How Teams Actually Use CI/CD
 
-### Your Context: Company X / Mission Critical Client
+### A Typical Team Workflow
 
 ```mermaid
 flowchart TD
     subgraph Developer Workflow
-        K[Kostas writes\nMCX floor control fix]
+        K[Developer writes\nfix in the message parser]
         GIT[git push to\nfeature branch]
         PR[Pull Request]
     end
 
     subgraph CI Pipeline
-        BUILD[Build on Ubuntu\nQt6 + PJSIP]
-        UNIT[Unit tests\nTestFloorControl\nTestMCXProtocol]
-        INTEG[Integration tests\nsimulate SIP sessions]
+        BUILD[Build on Ubuntu\nQt6]
+        UNIT[Unit tests\nTestCalculator\nTestMessageParser]
+        INTEG[Integration tests\nTCP loopback server]
         STATIC[Static analysis\ncppcheck]
         RESULT{All green?}
     end
@@ -126,11 +126,11 @@ problems before a human even looks at the code.
 
 ---
 
-### Defence — HENSOLDT Radar Software
+### Safety-Critical Embedded Software
 
 ```mermaid
 flowchart TD
-    DEV[Developer pushes\nradar signal processing fix]
+    DEV[Developer pushes\nsignal processing fix]
 
     subgraph CI Pipeline
         B1[Build for x86]
@@ -149,7 +149,7 @@ flowchart TD
     style REL fill:#404040,color:#fff
 ```
 
-Defence adds extra steps: MISRA C++ static analysis, code coverage
+Safety-critical projects add extra steps: MISRA C++ static analysis, code coverage
 requirements, cross-compilation for target hardware.
 
 ---
@@ -161,18 +161,18 @@ flowchart TD
     subgraph Unit Tests - Milliseconds - Always in CI
         U1[TestCalculator\nbusiness logic]
         U2[TestNoteModel\ndata layer]
-        U3[TestMCXProtocol\nmessage parsing]
+        U3[TestMessageParser\nmessage parsing]
     end
 
     subgraph Integration Tests - Seconds - Always in CI
         I1[SQLite in-memory]
         I2[TCP loopback server]
-        I3[Mock SIP stack]
+        I3[Mock network stack]
     end
 
     subgraph System Tests - Minutes - Sometimes
-        S1[Full MCX call flow]
-        S2[Multi-client PTT]
+        S1[Full user workflow]
+        S2[Multi-client chat]
         S3[Performance / latency]
     end
 
@@ -186,7 +186,7 @@ flowchart TD
 |---|---|---|---|
 | Unit tests | Milliseconds | Always | TestCalculator |
 | Integration tests | Seconds | Always | SQLite in-memory |
-| System tests | Minutes | Sometimes | Full MCX flow |
+| System tests | Minutes | Sometimes | Full workflow |
 | Hardware tests | Hours | Rarely | Real CAN bus |
 
 ---
@@ -204,9 +204,9 @@ flowchart LR
 
     subgraph Cannot Test in CI
         F[Real CAN bus hardware]
-        G[Real Mission Critical Network network]
+        G[Real production network]
         H[GUI visual rendering]
-        I[RTP audio quality]
+        I[Audio quality]
     end
 
     style A fill:#1F4E79,color:#fff
@@ -269,7 +269,7 @@ This tells Qt to render offscreen — tests run fine without a display.
 
 ```mermaid
 sequenceDiagram
-    actor K as Kostas
+    actor K as Developer
     participant GH as GitHub
     participant CI as CI Runner
     participant EMAIL as Email
@@ -279,7 +279,7 @@ sequenceDiagram
     CI->>CI: build OK
     CI->>CI: FAIL: test_divide_by_zero
     CI-->>GH: workflow failed
-    GH-->>EMAIL: notify Kostas
+    GH-->>EMAIL: notify Developer
     GH->>GH: red badge on repo
     K->>K: fix the bug
     K->>GH: git push fixed code
@@ -301,8 +301,7 @@ Add this to your top-level README:
 ```
 
 Renders as a live green/red indicator on your repo.
-Recruiters at HENSOLDT, Rheinmetall, Airbus look at this
-immediately when visiting a GitHub repo.
+Visitors see this indicator immediately when they open the repository.
 
 ---
 
@@ -310,11 +309,10 @@ immediately when visiting a GitHub repo.
 
 | Standard | Domain | CI/CD Requirement |
 |---|---|---|
-| **DO-178C** | Aerospace — Airbus | Test coverage evidence, traceability |
-| **ISO 26262** | Automotive — Bosch | ASIL-rated test suites, regression |
-| **AQAP-2110** | NATO defence — Rheinmetall | Build reproducibility, test reports |
-| **IEC 61508** | Industrial — HENSOLDT | Verified test results per SIL level |
-| **3GPP / Mission Critical Network** | MCX — Company X | Protocol conformance testing |
+| **DO-178C** | Aerospace | Test coverage evidence, traceability |
+| **ISO 26262** | Automotive | ASIL-rated test suites, regression |
+| **AQAP-2110** | NATO defence | Build reproducibility, test reports |
+| **IEC 61508** | Industrial | Verified test results per SIL level |
 
 In all of these — automated testing is not optional.
 CI/CD is the infrastructure that makes it practical at scale.

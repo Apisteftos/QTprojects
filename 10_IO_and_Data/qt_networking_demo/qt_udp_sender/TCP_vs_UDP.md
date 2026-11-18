@@ -333,13 +333,13 @@ flowchart TD
     TCP --> T1[File transfer\nHTTP · HTTPS]
     TCP --> T2[Database queries\nSQL · MongoDB]
     TCP --> T3[Email · SSH\nChat · REST APIs]
-    TCP --> T4[MCX signaling\nSIP over TLS]
+    TCP --> T4[Call signaling\nSIP over TLS]
 
     UDP --> U1[Audio/Video streaming\nRTP · WebRTC]
     UDP --> U2[Online gaming\nposition updates]
     UDP --> U3[Radar · Telemetry\nsensor streams]
     UDP --> U4[DNS lookups\nSNMP · NTP]
-    UDP --> U5[MCX media\naudio over RTP/UDP]
+    UDP --> U5[Voice media\naudio over RTP/UDP]
 
     style TCP fill:#1F4E79,color:#fff
     style UDP fill:#2E75B6,color:#fff
@@ -351,8 +351,8 @@ flowchart TD
 
 | Domain | Protocol | Why |
 |---|---|---|
-| MCX/MCPTT signaling (Mission Critical Client) | TCP/TLS | SIP must be reliable — call setup can't be lost |
-| MCX/MCPTT audio (Mission Critical Client) | UDP | RTP audio — latency over reliability |
+| VoIP call signaling (SIP) | TCP/TLS | SIP must be reliable — call setup can't be lost |
+| VoIP call audio (RTP) | UDP | RTP audio — latency over reliability |
 | Radar data stream | UDP | High rate, real-time — old frames are useless |
 | SCADA sensor telemetry | UDP | High frequency, tolerable loss |
 | Industrial PLC commands | TCP | Commands must arrive — machine safety |

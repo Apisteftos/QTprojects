@@ -23,15 +23,19 @@ on:
   pull_request:
     branches: [ main ]
  
+env:
+  CICD_DIR: 12_BuildTestDeploy/qt_cicd_demo
+  TEST_DIR: 12_BuildTestDeploy/qt_test_demo
+
 jobs:
   build-and-test:
     name: Build & Test (Ubuntu + Qt6)
     runs-on: ubuntu-latest
- 
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
- 
+        uses: actions/checkout@v7.0.1
+
       - name: Install Qt6 and build dependencies
         run: |
           sudo apt-get update
@@ -40,31 +44,29 @@ jobs:
             libqt6sql6-sqlite \
             cmake \
             build-essential
- 
+
       - name: Build qt_cicd_demo app
+        working-directory: ${{ env.CICD_DIR }}
         run: |
-          cd qt_cicd_demo
           cmake -B build -DCMAKE_BUILD_TYPE=Release
           cmake --build build --parallel
- 
+
       - name: Build qt_cicd_demo tests
+        working-directory: ${{ env.CICD_DIR }}/tests
         run: |
-          cd qt_cicd_demo/tests
           cmake -B build -DCMAKE_BUILD_TYPE=Release
           cmake --build build --parallel
- 
+
       - name: Run qt_cicd_demo tests
-        run: |
-          cd qt_cicd_demo/tests/build
-          QT_QPA_PLATFORM=offscreen ./qt_cicd_demo_tests -v2
- 
+        working-directory: ${{ env.CICD_DIR }}/tests/build
+        run: QT_QPA_PLATFORM=offscreen ./qt_cicd_demo_tests -v2
+
       - name: Build qt_test_demo
+        working-directory: ${{ env.TEST_DIR }}
         run: |
-          cd qt_test_demo
           cmake -B build -DCMAKE_BUILD_TYPE=Release
           cmake --build build --parallel
- 
+
       - name: Run qt_test_demo tests
-        run: |
-          cd qt_test_demo/build
-          QT_QPA_PLATFORM=offscreen ./qt_test_demo -v2
+        working-directory: ${{ env.TEST_DIR }}/build
+        run: QT_QPA_PLATFORM=offscreen ./qt_test_demo -v2

@@ -89,11 +89,95 @@ Key ideas:
 | Look | Native-style controls | Fully custom |
 | Logic | C++ | C++ backend exposed to QML |
 
-Both use the same Qt Core, so the signals and slots, event loop and parent-child ideas apply to both. This tutorial starts with Widgets because they teach the fundamentals clearly, and later chapters also cover QML.
+Both use the same Qt Core, so the signals and slots, event loop and parent-child ideas apply to both. This tutorial covers both: Widgets teach the fundamentals in plain C++, and QML, which is described next, gets major chapters of its own.
 
 ---
 
-## 3. Tools You Need
+## 3. What Is QML?
+
+**QML** (Qt Modeling Language) is Qt's declarative language for building user interfaces. Instead of creating widget objects and calling functions in C++, you *describe* what the interface looks like and how its parts relate to each other. **Qt Quick** is the Qt module that runs QML: it provides the visual items, the animation system and a GPU-accelerated renderer.
+
+```qml
+import QtQuick
+import QtQuick.Controls
+
+ApplicationWindow {
+    visible: true
+    width: 320
+    height: 200
+    title: "Hello QML"
+
+    Label {
+        id: label
+        text: "Hello, QML!"
+        anchors.horizontalCenter: parent.horizontalCenter
+        y: 40
+    }
+
+    Button {
+        text: "Click me"
+        anchors.centerIn: parent
+        onClicked: label.text = "Clicked!"
+    }
+}
+```
+
+Key ideas:
+
+- **Declarative tree of items.** A QML file is a tree of objects such as `Rectangle`, `Text`, `Button` and `ListView`, each with properties like `width`, `color` and `text`.
+- **Property bindings.** A property can be an expression, for example `width: parent.width / 2`. When `parent.width` changes, QML re-evaluates the expression and updates the item automatically, with no manual `connect()` and no update code.
+- **Signal handlers.** Every signal has a handler named `on<Signal>`, such as `onClicked`. The handler contains a short JavaScript snippet.
+- **Anchors and layouts** position items relative to each other, so interfaces scale to different screen sizes.
+- **States, transitions and animations** are part of the language, which makes animated, touch-friendly interfaces simple to build.
+- **JavaScript** is used for small pieces of UI logic. Anything heavier belongs in C++.
+
+### QML and C++ work together
+
+In real applications, QML contains the interface and C++ contains the logic. A C++ class that derives from `QObject` is exposed to QML, which can then read its properties, call its methods and react to its signals:
+
+```cpp
+#include <QObject>
+#include <QtQml/qqmlregistration.h>
+
+class Counter : public QObject
+{
+    Q_OBJECT
+    QML_ELEMENT
+    Q_PROPERTY(int value READ value NOTIFY valueChanged)
+
+public:
+    int value() const { return m_value; }
+    Q_INVOKABLE void increment() { ++m_value; emit valueChanged(); }
+
+signals:
+    void valueChanged();
+
+private:
+    int m_value = 0;
+};
+```
+
+| C++ side | What it gives QML |
+|----------|-------------------|
+| `Q_PROPERTY` | A property that QML can read and bind to, with a change signal that updates the UI |
+| `Q_INVOKABLE` / slots | Functions that QML can call |
+| Signals | Events that QML can react to |
+| `QAbstractListModel` | Data for `ListView` and other list-like items |
+| `QML_ELEMENT` | Registers the class as a QML type |
+
+This split is the same idea as the MVVM pattern: C++ holds the data and the logic, QML only displays it.
+
+### Where QML is used
+
+QML is the usual choice for touch screens, dashboards, instrument clusters, in-vehicle infotainment and other embedded displays. Qt also offers **Qt Design Studio** for designers to build QML interfaces visually, and **Qt for MCUs** to run a QML subset on microcontrollers.
+
+### How QML is built with CMake
+
+QML files are part of the build. In CMake, a QML module is declared with `qt_add_qml_module`, which packages the `.qml` files and registers the C++ types. You will see this in the QML chapters.
+
+---
+
+## 4. Tools You Need
 
 | Tool | Notes |
 |------|-------|
@@ -104,7 +188,7 @@ Both use the same Qt Core, so the signals and slots, event loop and parent-child
 
 ---
 
-## 4. Building an Example
+## 5. Building an Example
 
 Every example builds the same way. From inside an example folder:
 
@@ -124,7 +208,7 @@ cmake -S . -B build -DCMAKE_CXX_COMPILER=<path-to-g++-14>
 
 ---
 
-## 5. Continuous Integration
+## 6. Continuous Integration
 
 Every push and pull request to `main` triggers a GitHub Actions workflow. It builds the examples that include tests and runs them without a display, using Qt's offscreen platform plugin:
 
@@ -136,7 +220,7 @@ See `.github/workflows/ci.yml` for the full configuration.
 
 ---
 
-## 6. Environment
+## 7. Environment
 
 | Item | Value |
 |------|-------|
@@ -150,7 +234,7 @@ See `.github/workflows/ci.yml` for the full configuration.
 
 ---
 
-## 7. Reference
+## 8. Reference
 
 | Topic | Where to look |
 |-------|---------------|

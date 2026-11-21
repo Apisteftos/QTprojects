@@ -235,7 +235,7 @@ jobs:
     runs-on: ubuntu-latest  # free GitHub-hosted Ubuntu VM
 
     steps:
-      - uses: actions/checkout@v4     # get the code
+      - uses: actions/checkout@v7     # get the code
 
       - name: Install Qt6             # same packages as your machine
         run: |

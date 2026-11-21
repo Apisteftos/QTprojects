@@ -181,9 +181,9 @@ QML files are part of the build. In CMake, a QML module is declared with `qt_add
 
 | Tool | Notes |
 |------|-------|
-| **Qt 6** | Installed with the Qt online installer or your distribution's packages |
+| **Qt 6.8 LTS or newer** | Installed with the Qt online installer or your distribution's packages |
 | **Qt Creator** | The official IDE with a built-in designer, debugger and CMake support |
-| **CMake 3.21 or newer** | The build system used by every example |
+| **CMake 3.21 or newer** | The build system used by every example (Qt 6.12 itself needs CMake 3.25 or newer) |
 | **A C++23 compiler** | GCC 14 or newer is required for `std::println` |
 
 ---
@@ -216,21 +216,36 @@ Every push and pull request to `main` triggers a GitHub Actions workflow. It bui
 QT_QPA_PLATFORM=offscreen ./build/<test-executable>
 ```
 
+The workflow runs on `ubuntu-latest` and checks out the repository with `actions/checkout@v7`, the current major version of the checkout action. The `@v7` tag follows the newest 7.x release, so patch updates arrive automatically.
+
 See `.github/workflows/ci.yml` for the full configuration.
 
 ---
 
 ## 7. Environment
 
-| Item | Value |
-|------|-------|
-| OS | Ubuntu 24.04 |
-| Qt | Qt 6 |
+### Development machine
+
+All examples are developed and tested on this setup.
+
+| Item | Version |
+|------|---------|
+| OS | Ubuntu 26.04.1 LTS |
+| Compiler | GCC 15.2.0 |
+| Qt | 6.10.2 |
+| Qt Creator | 18.0.2 |
+| CMake | 4.2.3 |
 | C++ standard | C++23 |
-| CMake | 3.21 or newer |
-| IDE | Qt Creator |
 | Testing | QTest |
-| CI | GitHub Actions |
+| CI | GitHub Actions (`ubuntu-latest`) |
+
+### Minimum requirements
+
+| Item | Minimum |
+|------|---------|
+| Qt | 6.8 LTS |
+| CMake | 3.21 (3.25 for Qt 6.12) |
+| Compiler | GCC 14, because `std::println` needs it |
 
 ---
 

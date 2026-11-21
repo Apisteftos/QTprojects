@@ -163,23 +163,31 @@ This reruns the exact same commit without a new push.
 
 ---
 
-## 7. The Warning You See
+## 7. Keeping the Actions Up to Date
+
+GitHub shows a warning in the job summary when a workflow uses an action that still runs on an outdated Node.js runtime, for example:
 
 ```
-Node.js 20 actions are deprecated. actions/checkout@v4
-will be forced to run with Node.js 24 by default starting June 2025
+Node.js 20 actions are deprecated.
 ```
 
-This is just a GitHub infrastructure warning — not your code.
-It means GitHub is upgrading their runner environment.
-It does not affect your build. To silence it, update `ci.yml`:
+This is a warning about the action, not about your code. It does not break your build today, but old action versions can stop working later.
+
+To fix it, use the current major version of the action in `ci.yml`:
 
 ```yaml
       - name: Checkout repository
-        uses: actions/checkout@v4   # already the latest — warning is on GitHub's side
+        uses: actions/checkout@v7
 ```
 
-No action needed from you right now.
+How the version tag works:
+
+| Tag | Meaning |
+|-----|---------|
+| `@v7` | The newest 7.x release, so patch updates arrive automatically |
+| `@v7.0.1` | Exactly this release, and you update it yourself |
+
+Look at the releases page of an action from time to time to see which major version is current.
 
 ---
 

@@ -57,7 +57,7 @@ Runs on every push to `main` and every pull request targeting `main`.
 ```mermaid
 flowchart TD
     T[Trigger\ngit push to main]
-    S1[Step 1\ncheckout@v4\nget the code]
+    S1[Step 1\ncheckout@v7\nget the code]
     S2[Step 2\napt-get install\nqt6-base-dev cmake ninja]
     S3[Step 3\ncmake build\nqt_cicd_demo app]
     S4[Step 4\ncmake build\nqt_cicd_demo_tests]
@@ -91,7 +91,7 @@ jobs:
     runs-on: ubuntu-latest   # free GitHub-hosted Ubuntu VM
 
     steps:
-      - uses: actions/checkout@v4   # clone the repo
+      - uses: actions/checkout@v7   # clone the repo
 
       - name: Install Qt6
         run: |

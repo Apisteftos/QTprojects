@@ -1,0 +1,14 @@
+<RCC>
+    <qresource>
+        <file>Scratch_ui.qmlproject</file>
+        <file>Scratch_ui/Constants.qml</file>
+        <file>Scratch_ui/EventListModel.qml</file>
+        <file>Scratch_ui/EventListSimulator.qml</file>
+        <file>Scratch_ui/qmldir</file>
+        <file>Scratch_uiContent/App.qml</file>
+        <file>Scratch_uiContent/Screen01.ui.qml</file>
+        <file>Scratch_uiContent/images/landscape.png</file>
+        <file>Scratch_uiContent/landscape.png</file>
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
+</RCC>

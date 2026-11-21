@@ -130,3 +130,55 @@ build-*/
 Thumbs.db
 core
 tags
+
+
+
+# ---------------------------------------------------------------
+# .gitignore for Qt Design Studio projects
+# Rule: commit project source and configuration files only,
+# never user settings or generated files.
+# ---------------------------------------------------------------
+
+# --- Qt Design Studio user settings (the equivalent of Qt Creator's .user file)
+*.qmlproject.qtds
+*.qtds
+
+# --- Qt Creator user settings and caches
+*.user
+*.user.*
+CMakeLists.txt.user*
+.qtcreator/
+.qtcreator.*
+.cache/
+
+# --- Build output
+build/
+build-*/
+Debug/
+Release/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+*.o
+*.so
+*.a
+
+# --- Editors and system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# --- Files that Qt Design Studio can generate.
+# Qt's documentation says not to store generated files, but the exact
+# list depends on the project and the Design Studio version. Check what
+# your project creates, then remove the leading "#" of the lines you
+# want to ignore:
+# insight/
+# qmlcomponents/
+# qmlmodules/
+# src/import_qml_plugins.h

@@ -57,6 +57,7 @@ Window {
             y: 16
         }
 
+
         Text {
             id: subtitle
             text: root.itemCount + " items, level " + levelNames[root.level]
@@ -97,6 +98,14 @@ Window {
         // Common Item properties: opacity, rotation, scale, visible
         Rectangle {
             x: 16
+            y: 175
+            width: 60
+            height: 40
+            color: root.accent
+            opacity: 0.4
+        }
+        Rectangle {
+            x: 19
             y: 175
             width: 60
             height: 40

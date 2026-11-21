@@ -1,0 +1,13 @@
+<RCC>
+    <qresource>
+        <file>Items_and_assets.qmlproject</file>
+        <file>Items_and_assets/Constants.qml</file>
+        <file>Items_and_assets/EventListModel.qml</file>
+        <file>Items_and_assets/EventListSimulator.qml</file>
+        <file>Items_and_assets/qmldir</file>
+        <file>Items_and_assetsContent/App.qml</file>
+        <file>Items_and_assetsContent/Screen01.ui.qml</file>
+        <file>Items_and_assetsContent/leaf.png</file>
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
+</RCC>

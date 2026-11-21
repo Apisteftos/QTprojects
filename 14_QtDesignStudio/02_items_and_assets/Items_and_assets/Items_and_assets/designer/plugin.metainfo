@@ -1,0 +1,13 @@
+MetaInfo {
+    Type {
+        name: "Items_and_assets.EventListSimulator"
+        icon: ":/ItemLibrary/images/item-icon16.png"
+
+        Hints {
+            visibleInNavigator: true
+            canBeDroppedInNavigator: true
+            canBeDroppedInFormEditor: false
+            canBeDroppedInView3D: false
+        }
+    }
+}

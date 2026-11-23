@@ -1,5 +1,5 @@
 import QtQuick
-import Card_components
+import Components
 
 Window {
     width: 800

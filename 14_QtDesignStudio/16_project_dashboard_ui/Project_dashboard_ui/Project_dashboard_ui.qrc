@@ -1,0 +1,13 @@
+<RCC>
+    <qresource>
+        <file>Project_dashboard_ui.qmlproject</file>
+        <file>Project_dashboard_ui/Constants.qml</file>
+        <file>Project_dashboard_ui/EventListModel.qml</file>
+        <file>Project_dashboard_ui/EventListSimulator.qml</file>
+        <file>Project_dashboard_ui/qmldir</file>
+        <file>Project_dashboard_uiContent/App.qml</file>
+        <file>Project_dashboard_uiContent/Screen01.ui.qml</file>
+        <file>Project_dashboard_uiContent/StatCard.ui.qml</file>
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
+</RCC>

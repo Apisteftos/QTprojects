@@ -17,7 +17,7 @@ Three cards in a row. Each card has an accent bar, an icon, a title and a subtit
 | `InfoCard.ui.qml` | The component: the card with its three public properties |
 | `Screen01.ui.qml` | The scene with three `InfoCard` instances in a `Row` |
 | `App.qml` | The window (same as in lesson 03) |
-| `assets/leaf.png` | The image from lesson 02 |
+| `leaf.png` | The image from lesson 02 |
 
 ---
 
@@ -39,7 +39,7 @@ Design Studio lists your components under **Components > My Components** only if
 
 ### 3.1 Create the project
 
-Create `Card_components` with the settings of the [area README](../README.md). Import `assets/leaf.png` with the Plus button in Assets. Use `App.qml` from lesson 03.
+Create `Card_components` with the settings of the [area README](../README.md). Import `leaf.png` with the Plus button in Assets. Use `App.qml` from lesson 03, but keep the `import` line that Design Studio generated for your project name.
 
 ### 3.2 Build one card as normal items
 
@@ -114,7 +114,7 @@ Rectangle {
         id: icon
         width: 80
         height: 80
-        source: "assets/leaf.png"
+        source: "leaf.png"
         fillMode: Image.PreserveAspectFit
         anchors.top: accentBar.bottom
         anchors.topMargin: 24
@@ -213,9 +213,10 @@ Rectangle {
 | Problem | Cause and fix |
 |---------|---------------|
 | The component is not in My Components | The file name does not start with a capital letter, or the file is not saved in the project |
+| `QML module not found (Card_components)` | The `import` line in `App.qml` must name **your** project. If your project is called `Components`, the line is `import Components`. Do not paste the import from the tutorial, keep the one Design Studio generated |
 | `InfoCard is not a type` | The component file is in another folder, so the instance needs an `import`, or the module has no `qmldir` entry. Keep both files in the same folder |
 | The new property is missing in Properties | The alias was not exported, or you are on an instance of the old version. Save and reopen the scene |
-| The image is empty in the instances | The `source` path is relative to the component file. Check `assets/leaf.png` |
+| The image is empty in the instances | The `source` path is relative to the component file. Check where Assets put `leaf.png` (usually next to the QML files) and fix the path in `InfoCard.ui.qml` |
 | Changing one instance changes the others | You changed the component, not the instance. Check the breadcrumb at the top of the 2D view |
 | The alias option is disabled | Export an inner item, not the root item of the component |
 
@@ -223,7 +224,7 @@ Rectangle {
 
 ## 7. Git
 
-Commit this README, `InfoCard.ui.qml`, `Screen01.ui.qml`, `App.qml` and `assets/leaf.png`. See the area README for the files that stay out of Git.
+Commit this README, `InfoCard.ui.qml`, `Screen01.ui.qml`, `App.qml` and `leaf.png`. See the area README for the files that stay out of Git.
 
 ---
 

@@ -1,0 +1,13 @@
+<RCC>
+    <qresource>
+        <file>Two_d_effects_and_3d.qmlproject</file>
+        <file>Two_d_effects_and_3d/Constants.qml</file>
+        <file>Two_d_effects_and_3d/EventListModel.qml</file>
+        <file>Two_d_effects_and_3d/EventListSimulator.qml</file>
+        <file>Two_d_effects_and_3d/qmldir</file>
+        <file>Two_d_effects_and_3dContent/App.qml</file>
+        <file>Two_d_effects_and_3dContent/Screen01.ui.qml</file>
+        <file>Two_d_effects_and_3dContent/leaf.png</file>
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
+</RCC>

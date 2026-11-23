@@ -1,25 +1,49 @@
-# C++ objects and libs
-*.slo
-*.lo
-*.o
-*.a
-*.la
-*.lai
-*.so
-*.so.*
-*.dll
-*.dylib
+# ---------------------------------------------------------------
+# .gitignore for the Qt tutorial (Qt Creator, CMake, Qt Design Studio)
+# Rule: commit project source and configuration files only,
+# never user settings, build output or generated files.
+# ---------------------------------------------------------------
 
-# Qt-es
+# --- Build folders (Qt Creator names them build/..., build-...-Debug, ...-Debug)
+build/
+build-*/
+*-build-*/
+cmake-build-*/
+*-Debug/
+*-Release/
+*-RelWithDebInfo/
+*-MinSizeRel/
+Debug/
+Release/
+.qtc/
+.qtcreator/
+.qtcreator.*
+.cache/
+.clangd
+.qtc_clangd/
+
+# --- CMake generated files
+CMakeLists.txt.user
+CMakeLists.txt.user*
+CMakeUserPresets.json
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+/Testing/
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+_deps/
+compile_commands.json
+target_wrapper.*
+
+# --- Qt generated files
+*_plugin_import.cpp
+*_qmlcache.qrc
+.qmake.cache
+.qmake.stash
 object_script.*.Release
 object_script.*.Debug
-*_plugin_import.cpp
-/.qmake.cache
-/.qmake.stash
-*.pro.user
-*.pro.user.*
-*.qbs.user
-*.qbs.user.*
 *.moc
 moc_*.cpp
 moc_*.h
@@ -27,151 +51,77 @@ qrc_*.cpp
 ui_*.h
 *.qmlc
 *.jsc
-Makefile*
-*build-*
-build/
 *.qm
 *.prl
 *.qmlls.ini
+Makefile*
 
-# Qt unit tests
-target_wrapper.*
-
-# QtCreator
+# --- Qt Creator and Qt Design Studio user settings (contain absolute paths)
+*.user
+*.user.*
+*.pro.user*
+*.qbs.user
+*.qbs.user.*
+*.qmlproject.user
+*.qmlproject.user.*
+*.qmlproject.qtds
+*.qtds
+*creator.user*
 *.autosave
 
-# QtCreator Qml
-*.qmlproject.user
-*.qmlproject.user.*
-
-# QtCreator CMake
-CMakeLists.txt.user*
-
-# QtCreator 4.8< compilation database
-compile_commands.json
-
-# QtCreator local machine specific files for imported projects
-*creator.user*
-
-*_qmlcache.qrc
-
-# ----------------------------------------------------------------------------
-# CMake generated files (from github/gitignore CMake.gitignore)
-# ----------------------------------------------------------------------------
-CMakeLists.txt.user
-CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
-Makefile
-cmake_install.cmake
-install_manifest.txt
-CTestTestfile.cmake
-_deps
-CMakeUserPresets.json
-
-# ----------------------------------------------------------------------------
-# Qt Design Studio: machine-specific settings (contain absolute paths)
-# ----------------------------------------------------------------------------
-*.qmlproject.qtds
-*.qmlproject.user
-*.qmlproject.user.*
-
-# ----------------------------------------------------------------------------
-# Build folders and tool caches
-# ----------------------------------------------------------------------------
-build/
-build-*/
-*-build-*/
-.qtc/
-.cache/
-.clangd
-
-# ----------------------------------------------------------------------------
-# Kept from the previous .gitignore of this repository
-# ----------------------------------------------------------------------------
-!core/
-*.*#
+# --- Compiler output
+*.slo
+*.lo
+*.o
+*.obj
+*.a
+*.la
+*.lai
+*.so
+*.so.*
+*.dll
+*.dylib
+*.exe
+*.app
+*.debug
 *.Debug
 *.Release
-*.app
-*.core
-*.debug
-*.exe
-*.flc
-*.ib_pdb_index
-*.idb
-*.ilk
-*.ncb
-*.obj
-*.opensdf
-*.orig
 *.pdb
-*.pro.user*
-*.pyc
-*.rc
-*.rej
-*.res
-*.sdf
+*.ilk
+*.idb
+*.pch
+*_pch.h.cpp
+
+# --- Core dump files (only at the top of the repo, so a folder named "core" is kept)
+/core
+core.[0-9]*
+
+# --- Visual Studio leftovers
 *.sln
 *.suo
 *.vcproj
 *.vcxproj
-*_pch.h.cpp
-*_resource.rc
+*.vcxproj.*
 *vcproj.*.*.user
-*vcxproj.*
-*~
-.#*
-.*.swp
-.DS_Store
-.directory
-.qtc_clangd/
-Thumbs.db
-core
-tags
+*.sdf
+*.opensdf
+*.ncb
+*.ib_pdb_index
 
-
-
-# ---------------------------------------------------------------
-# .gitignore for Qt Design Studio projects
-# Rule: commit project source and configuration files only,
-# never user settings or generated files.
-# ---------------------------------------------------------------
-
-# --- Qt Design Studio user settings (the equivalent of Qt Creator's .user file)
-*.qmlproject.qtds
-*.qtds
-
-# --- Qt Creator user settings and caches
-*.user
-*.user.*
-CMakeLists.txt.user*
-.qtcreator/
-.qtcreator.*
-.cache/
-
-# --- Build output
-build/
-build-*/
-Debug/
-Release/
-cmake-build-*/
-CMakeCache.txt
-CMakeFiles/
-cmake_install.cmake
-compile_commands.json
-*.o
-*.so
-*.a
-
-# --- Editors and system files
+# --- Editors, system files, merge leftovers
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
+.directory
 *.swp
+.*.swp
 *~
+*.*#
+.#*
+*.orig
+*.rej
+tags
 
 # --- Files that Qt Design Studio can generate.
 # Qt's documentation says not to store generated files, but the exact

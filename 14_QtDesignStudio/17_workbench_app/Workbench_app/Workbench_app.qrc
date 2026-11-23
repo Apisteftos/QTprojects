@@ -1,0 +1,21 @@
+<RCC>
+    <qresource>
+        <file>Workbench_app.qmlproject</file>
+        <file>Workbench_app/Constants.qml</file>
+        <file>Workbench_app/EventListModel.qml</file>
+        <file>Workbench_app/EventListSimulator.qml</file>
+        <file>Workbench_app/qmldir</file>
+        <file>Workbench_appContent/App.qml</file>
+        <file>Workbench_appContent/AppState.qml</file>
+        <file>Workbench_appContent/ColorTab.qml</file>
+        <file>Workbench_appContent/ImageTab.qml</file>
+        <file>Workbench_appContent/NotesTab.qml</file>
+        <file>Workbench_appContent/Screen01.ui.qml</file>
+        <file>Workbench_appContent/TextTab.qml</file>
+        <file>Workbench_appContent/Theme.qml</file>
+        <file>Workbench_appContent/TimerTab.qml</file>
+        <file>Workbench_appContent/UnitsTab.qml</file>
+        <file>Workbench_appContent/VideoTab.qml</file>
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,13 @@
+<RCC>
+    <qresource>
+        <file>States.qmlproject</file>
+        <file>States/Constants.qml</file>
+        <file>States/EventListModel.qml</file>
+        <file>States/EventListSimulator.qml</file>
+        <file>States/qmldir</file>
+        <file>StatesContent/App.qml</file>
+        <file>StatesContent/Screen01.ui.qml</file>
+        <file>StatesContent/leaf.png</file>
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
+</RCC>

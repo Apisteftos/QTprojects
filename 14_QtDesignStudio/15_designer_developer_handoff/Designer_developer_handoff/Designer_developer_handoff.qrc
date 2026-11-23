@@ -1,0 +1,13 @@
+<RCC>
+    <qresource>
+        <file>Designer_developer_handoff.qmlproject</file>
+        <file>Designer_developer_handoff/Constants.qml</file>
+        <file>Designer_developer_handoff/EventListModel.qml</file>
+        <file>Designer_developer_handoff/EventListSimulator.qml</file>
+        <file>Designer_developer_handoff/qmldir</file>
+        <file>Designer_developer_handoffContent/App.qml</file>
+        <file>Designer_developer_handoffContent/Backend.qml</file>
+        <file>Designer_developer_handoffContent/Screen01.ui.qml</file>
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
+</RCC>

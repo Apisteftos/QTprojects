@@ -1,0 +1,15 @@
+<RCC>
+    <qresource>
+        <file>Multi_screen_flow.qmlproject</file>
+        <file>Multi_screen_flow/Constants.qml</file>
+        <file>Multi_screen_flow/EventListModel.qml</file>
+        <file>Multi_screen_flow/EventListSimulator.qml</file>
+        <file>Multi_screen_flow/qmldir</file>
+        <file>Multi_screen_flowContent/App.qml</file>
+        <file>Multi_screen_flowContent/DetailsScreen.ui.qml</file>
+        <file>Multi_screen_flowContent/HomeScreen.ui.qml</file>
+        <file>Multi_screen_flowContent/Screen01.ui.qml</file>
+        <file>Multi_screen_flowContent/SettingsScreen.ui.qml</file>
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
+</RCC>

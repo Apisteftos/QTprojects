@@ -28,7 +28,7 @@ Rectangle {
         id: icon
         width: 80
         height: 80
-        source: "assets/leaf.png"
+        source: "leaf.png"
         fillMode: Image.PreserveAspectFit
         anchors.top: accentBar.bottom
         anchors.topMargin: 24

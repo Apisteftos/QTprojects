@@ -1,0 +1,13 @@
+<RCC>
+    <qresource>
+        <file>Timeline.qmlproject</file>
+        <file>Timeline/Constants.qml</file>
+        <file>Timeline/EventListModel.qml</file>
+        <file>Timeline/EventListSimulator.qml</file>
+        <file>Timeline/qmldir</file>
+        <file>TimelineContent/App.qml</file>
+        <file>TimelineContent/Screen01.ui.qml</file>
+        <file>TimelineContent/leaf.png</file>
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
+</RCC>

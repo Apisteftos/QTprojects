@@ -1,0 +1,13 @@
+<RCC>
+    <qresource>
+        <file>Controls_and_styles.qmlproject</file>
+        <file>Controls_and_styles/Constants.qml</file>
+        <file>Controls_and_styles/EventListModel.qml</file>
+        <file>Controls_and_styles/EventListSimulator.qml</file>
+        <file>Controls_and_styles/qmldir</file>
+        <file>Controls_and_stylesContent/App.qml</file>
+        <file>Controls_and_stylesContent/Screen01.ui.qml</file>
+        <file>Controls_and_stylesContent/styles.png</file>
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,10 @@
+{
+    "updated": "2026-11-23T08:00:00",
+    "stations": [
+        { "name": "North Pier", "city": "Port Alma", "temperature": 7.5 },
+        { "name": "Old Mill", "city": "Port Alma", "temperature": 9.0 },
+        { "name": "Hilltop", "city": "Greenfield", "temperature": 3.5 },
+        { "name": "Airfield", "city": "Greenfield", "temperature": 5.0 },
+        { "name": "Harbour", "city": "Westport", "temperature": 10.5 }
+    ]
+}

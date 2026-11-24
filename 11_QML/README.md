@@ -23,17 +23,20 @@ QML is Qt's declarative language for building user interfaces. You describe the 
 | 09 | `09_animations` | `NumberAnimation`, `ColorAnimation`, animation sequences |
 | 10 | `10_models_and_views` | `ListModel`, `Repeater`, `ListView`, delegates |
 | 11 | `11_javascript_in_qml` | Functions, `Component.onCompleted`, when to move logic to C++ |
-| 12 | `12_cpp_properties_and_methods` | `Q_PROPERTY`, `Q_INVOKABLE`, `QML_ELEMENT` |
-| 13 | `13_cpp_signals_to_qml` | C++ signals that QML reacts to, `QML_SINGLETON` |
-| 14 | `14_cpp_list_models` | `QAbstractListModel` with roles, used in a `ListView` |
-| 15 | `15_network_and_data` | A C++ backend (HTTP/JSON or sockets) feeding QML |
-| 16 | `16_navigation` | `StackView`, `SwipeView`, `TabBar`, `Drawer`, `Loader` |
-| 17 | `17_styling_and_resources` | Material and Universal styles, fonts, images, resource files |
-| 18 | `18_testing_qml` | Qt Quick Test (`TestCase`), `qmllint`, `qmlformat`, the QML profiler |
-| 19 | `19_project_dashboard` | An animated dashboard with a C++ backend |
-| 20 | `20_project_mvvm` | MVVM: a C++ ViewModel exposed to QML |
+| 12 | `12_cpp_properties_and_methods` | `Q_PROPERTY` with `NOTIFY`, `Q_INVOKABLE`, `QML_ELEMENT`, why a method call in a binding does not update |
+| 13 | `13_cpp_signals_to_qml` | C++ signals with arguments, `Connections`, a `QTimer` in C++, `QML_SINGLETON` |
+| 14 | `14_cpp_list_models` | `QAbstractListModel` with roles, inserting and removing rows, `QAbstractItemModelTester` |
+| 15 | `15_network_and_data` | A C++ backend with `QNetworkAccessManager` and JSON feeding a list; loading and error state; resources |
+| 16 | `16_navigation` | `StackView`, `SwipeView`, `TabBar`, `Drawer`, `Loader`, attached properties |
+| 17 | `17_styling_and_resources` | Choosing a style (`qtquickcontrols2.conf`, run time and compile time), Material theme and accent, a `Theme` singleton, fonts, images, resource files |
+| 18 | `18_testing_qml` | Qt Quick Test (`TestCase`, data-driven tests, `SignalSpy`), `ctest`, `qmllint`, `qmlformat`, the QML Profiler |
+| 19 | `19_project_dashboard` | Project: an animated dashboard with a C++ backend, states, transitions and an alarm message |
+| 20 | `20_project_mvvm` | Project: MVVM with a plain C++ model, a ViewModel exposed to QML, and C++ tests without a window |
+| 21 | `21_project_mvc` | Project: MVC with a Qt model, a controller and a QML view, and how it differs from MVVM |
 
-Every folder contains a `README.md` (explanation and code), `main.cpp`, `Main.qml` and a `CMakeLists.txt`.
+Every folder contains a `README.md` (explanation and code), `main.cpp`, `Main.qml` and a `CMakeLists.txt`. From lesson 12 on, a folder also has the C++ classes of the lesson, and from lesson 11 on, extra QML files, a data file or a `tests/` folder where the lesson needs them. The last section of every README is a Reference table.
+
+Lessons 18, 20 and 21 have a test program. Run it from the lesson folder with `ctest --test-dir build --output-on-failure`; the tests need no screen.
 
 ---
 

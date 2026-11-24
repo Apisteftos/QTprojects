@@ -1,436 +1,185 @@
-# Qt QML Dashboard — Navigation + Live Charts + Animations
+# 19_project_dashboard
 
-A Qt6 QML project demonstrating **multi-page navigation**, **live Canvas charts**,
-**smooth animations**, and a **C++ ViewModel** feeding real-time data to QML.
-Four pages: Dashboard, Charts, Settings, About.
+A project for the end of the chapter: a **dashboard** with live numbers, a bar chart and an alarm message, all animated, with a **C++ backend** that produces the data. It uses what the earlier lessons taught: components (07), states and transitions (08), animations (09), models and views (10), properties and signals of C++ classes (12, 13).
 
----
+**Requires Qt 6.8 or newer.** Tested with Qt 6.10.2 and 6.12.0 (see the chapter README).
 
-## 1. Prerequisites
-
-```bash
-sudo apt update
-sudo apt install \
-  qt6-base-dev \
-  qt6-declarative-dev \
-  qml6-module-qtquick \
-  qml6-module-qtquick-controls \
-  qml6-module-qtquick-layouts \
-  qml6-module-qtquick-templates \
-  qml6-module-qtquick-window \
-  cmake \
-  build-essential \
-  qtcreator
-```
-
-| Package | Purpose |
-|---|---|
-| `qt6-declarative-dev` | QML engine + Qt Quick |
-| `qml6-module-qtquick` | `import QtQuick` — basic QML elements |
-| `qml6-module-qtquick-controls` | `Button`, `Slider`, `TabBar`, `SwipeView`, `ApplicationWindow` |
-| `qml6-module-qtquick-layouts` | `ColumnLayout`, `RowLayout`, `GridLayout` |
-| `qml6-module-qtquick-templates` | Required by Controls — install separately |
-| `qml6-module-qtquick-window` | `ApplicationWindow` root element |
-
-> **Important:** All six QML modules must be installed. The app builds
-> without them but crashes at runtime with `Type ApplicationWindow unavailable`
-> or `module not installed`.
+**Test status:** built with GCC 13.3 against Qt 6.4.2 (with small changes for that old version, which are not part of this folder; one is an explicit `import project_dashboard` in `Main.qml`, which Qt 6.8 does not need). An automated check tested the `Dashboard` class alone (signals, limits, the history, `reset`, the timer) and clicked through the window: steps, the cards, the bars, the alarm message, reset and the slider (62 checks, all passed). Animations were run offscreen, so the look of the movement was not judged: please build it once with your own 6.8+ kit and look at it.
 
 ---
 
-## 2. Create Project in Qt Creator
+## 1. What You Build
 
-1. `File → New Project → Application (Qt) → Qt Quick Application`
-2. Name: `qt_qml_dashboard`
-3. Location: `~/Desktop/Programming/QTprojects/`
-4. Build system: **CMake**
-5. Details screen: leave both checkboxes unchecked, Qt version: **Qt 6.4**
-6. Kit: Qt6 Desktop → Finish
+| File | Content |
+|------|---------|
+| `dashboard.h`, `dashboard.cpp` | The backend: simulated measurements, a level, a history, an alarm signal |
+| `MetricCard.qml` | A card with a title and a number that counts to its new value; the colours follow the level |
+| `BarChart.qml` | The history as bars; the heights are animated |
+| `Main.qml` | The window: header, three cards, the chart, the interval slider, the alarm message |
 
-Qt Creator generates: `Main.qml`, `CMakeLists.txt`
-
----
-
-## 3. Known Build Issue — Executable Name Clash
-
-`qt_add_qml_module` creates a directory named after the URI in the build folder.
-If the executable has the same name it fails with:
-```
-cannot open output file qt_qml_dashboard: Is a directory
-```
-
-**Fix:** executable is named `app` in `CMakeLists.txt`:
-```cmake
-qt_add_executable(app ...)
-qt_add_qml_module(app URI qt_qml_dashboard ...)
-```
+Start the program. The data are **simulated** (two waves), so the program runs everywhere and a test gets the same numbers every time. With a real machine, only `Dashboard::advance()` changes: it would read a sensor or a network answer (lesson 15) instead of calling `loadAt`.
 
 ---
 
-## 4. Project File Structure
+## 2. The Backend
 
-```
-qt_qml_dashboard/
-├── CMakeLists.txt         # qt_add_qml_module bundles all QML
-├── main.cpp               # creates DataProvider, exposes to QML engine
-├── dataprovider.h/.cpp    # C++ ViewModel — Q_PROPERTY + QTimer
-├── Main.qml               # root window — TabBar + SwipeView + alert overlay
-├── DashboardPage.qml      # page 1 — live metric cards with Canvas gauges
-├── MetricCard.qml         # reusable component — gauge + progress bar
-├── ChartsPage.qml         # page 2 — three live line charts
-├── ChartCanvas.qml        # reusable component — Canvas line chart
-├── SettingsPage.qml       # page 3 — sliders write back to C++
-└── AboutPage.qml          # page 4 — animations showcase
-```
+`Dashboard` has one job: produce data. It has no idea how they are shown.
 
-**All QML files go in the project root** — no subfolders needed.
-
----
-
-## 5. Architecture — MVVM with Live Data
-
-```mermaid
-flowchart TD
-    subgraph C++ Layer
-        DP[DataProvider\nQObject\nQTimer fires every 500ms\nupdates properties]
-    end
-
-    subgraph QML Engine
-        BIND[Property Binding\nautomatic — no connect needed\nwhen Q_PROPERTY NOTIFY fires\nQML re-reads the value]
-    end
-
-    subgraph QML View Layer
-        MAIN[Main.qml\nApplicationWindow\nTabBar + SwipeView\nalert overlay]
-        DASH[DashboardPage\n3 MetricCard components]
-        CHART[ChartsPage\n3 ChartCanvas components]
-        SET[SettingsPage\nSliders write back to C++]
-        ABOUT[AboutPage\nAnimations]
-    end
-
-    DP -->|emit dataChanged| BIND
-    BIND -->|binding re-evaluates| DASH
-    BIND -->|binding re-evaluates| CHART
-    BIND -->|binding re-evaluates| SET
-    SET -->|dataProvider.intervalMs = value| DP
-
-    style DP fill:#1F4E79,color:#fff
-    style BIND fill:#404040,color:#fff
-    style MAIN fill:#2E75B6,color:#fff
-```
-
----
-
-## 6. Navigation — TabBar + SwipeView
-
-```mermaid
-flowchart LR
-    TB[TabBar\nbottom navigation bar\n4 tabs]
-    SW[SwipeView\nholds 4 pages\nsynced with TabBar]
-
-    TB <-->|currentIndex| SW
-
-    SW --> P1[DashboardPage]
-    SW --> P2[ChartsPage]
-    SW --> P3[SettingsPage]
-    SW --> P4[AboutPage]
-
-    style TB fill:#1F4E79,color:#fff
-    style SW fill:#2E75B6,color:#fff
-```
-
-```qml
-SwipeView {
-    id: swipeView
-    currentIndex: tabBar.currentIndex   // synced to TabBar
-    DashboardPage {}
-    ChartsPage    {}
-    SettingsPage  {}
-    AboutPage     {}
-}
-
-TabBar {
-    id: tabBar
-    currentIndex: swipeView.currentIndex  // synced to SwipeView
-    TabButton { text: "Dashboard" }
-    TabButton { text: "Charts"    }
-    TabButton { text: "Settings"  }
-    TabButton { text: "About"     }
-}
-```
-
-Changing the tab updates the SwipeView. Swiping updates the TabBar.
-Both are synced via `currentIndex` binding.
-
----
-
-## 7. DataProvider — C++ ViewModel
-
-```mermaid
-flowchart TD
-    T[QTimer\nfires every 500ms]
-    T --> TICK[onTick\ngenerates new values\nCPU · Memory · Network]
-    TICK --> H[addToHistory\nQVariantList max 30 items]
-    TICK --> A[checkAlerts\nCPU threshold]
-    TICK --> E[emit dataChanged]
-    E --> QML[QML bindings\nre-evaluate automatically]
-
-    style T fill:#1F4E79,color:#fff
-    style E fill:#2E75B6,color:#fff
-    style QML fill:#404040,color:#fff
-```
-
-**Exposed properties:**
-
-| Property | Type | QML Usage |
-|---|---|---|
-| `cpuLoad` | `double` | `dataProvider.cpuLoad` |
-| `memoryMb` | `double` | `dataProvider.memoryMb` |
-| `networkKbps` | `double` | `dataProvider.networkKbps` |
-| `cpuHistory` | `QVariantList` | `dataProvider.cpuHistory` |
-| `memoryHistory` | `QVariantList` | `dataProvider.memoryHistory` |
-| `networkHistory` | `QVariantList` | `dataProvider.networkHistory` |
-| `hasAlert` | `bool` | `dataProvider.hasAlert` |
-| `alertMessage` | `QString` | `dataProvider.alertMessage` |
-| `isRunning` | `bool` | `dataProvider.isRunning` |
-| `intervalMs` | `int` (R/W) | `dataProvider.intervalMs = value` |
-| `cpuThreshold` | `double` (R/W) | `dataProvider.cpuThreshold = value` |
-
-**Invokables (callable from QML):**
-```qml
-dataProvider.start()
-dataProvider.stop()
-dataProvider.reset()
-dataProvider.dismissAlert()
-```
-
----
-
-## 8. Animations — What's Used Where
-
-```mermaid
-flowchart TD
-    subgraph Behavior Animations - automatic on value change
-        B1[Behavior on value\nNumberAnimation 400ms\nMetricCard gauge smoothing]
-        B2[Behavior on color\nColorAnimation 500ms\nred warning color transition]
-        B3[Behavior on width\nNumberAnimation 400ms\nprogress bar smoothing]
-        B4[Behavior on height\nNumberAnimation 300ms\nalert banner slide]
-    end
-
-    subgraph Explicit Animations - triggered manually
-        E1[SequentialAnimation\nAboutPage entrance\nreset then animate in]
-        E2[ParallelAnimation\nfade + scale simultaneously\nOpacity + Scale]
-        E3[RotationAnimation\nspinning Qt logo\nInfinite loop]
-    end
-
-    style B1 fill:#1F4E79,color:#fff
-    style E1 fill:#2E75B6,color:#fff
-```
-
-### Behavior Animation — simplest pattern
-
-```qml
-// Any time _displayValue changes, animate smoothly
-Behavior on _displayValue {
-    NumberAnimation {
-        duration: 400
-        easing.type: Easing.OutCubic
-    }
-}
-```
-
-### Sequential + Parallel Animation
-
-```qml
-SequentialAnimation {
-    id: entranceAnim
-
-    // First: reset to invisible
-    PropertyAction { target: content; property: "opacity"; value: 0 }
-
-    // Then: animate opacity AND scale at the same time
-    ParallelAnimation {
-        NumberAnimation { target: content; property: "opacity"; to: 1.0; duration: 400 }
-        NumberAnimation { target: content; property: "scale";   to: 1.0; duration: 400
-                          easing.type: Easing.OutBack }
-    }
-}
-```
-
-### Rotation Animation — infinite loop
-
-```qml
-RotationAnimation on rotation {
-    from:     0
-    to:       360
-    duration: 3000
-    loops:    Animation.Infinite
-    running:  pageVisible
-}
-```
-
----
-
-## 9. Canvas API — Custom Drawing
-
-QML's `Canvas` element gives you a 2D drawing API similar to HTML5 Canvas.
-Used here for gauges and line charts — no Qt Charts module needed.
-
-```qml
-Canvas {
-    onPaint: {
-        var ctx = getContext("2d");
-        ctx.clearRect(0, 0, width, height);
-
-        // Draw arc gauge
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius, startAngle, endAngle);
-        ctx.strokeStyle = "#1565c0";
-        ctx.lineWidth   = 14;
-        ctx.lineCap     = "round";
-        ctx.stroke();
-
-        // Draw filled line chart
-        ctx.beginPath();
-        ctx.moveTo(x0, y0);
-        for (var i = 1; i < points.length; i++)
-            ctx.lineTo(points[i].x, points[i].y);
-        ctx.strokeStyle = lineColor;
-        ctx.lineWidth   = 2.5;
-        ctx.stroke();
-    }
-
-    // Trigger repaint when data changes
-    Connections {
-        target: dataProvider
-        function onDataChanged() { canvas.requestPaint(); }
-    }
-}
-```
-
----
-
-## 10. Two-Way Binding — Settings Page
-
-QML can read AND write C++ properties:
-
-```qml
-// Slider reads from C++ and writes back on change
-Slider {
-    value: dataProvider.intervalMs         // READ from C++
-
-    onValueChanged: dataProvider.intervalMs = value  // WRITE to C++
-}
-```
-
-In C++ the setter triggers the timer restart:
 ```cpp
-void DataProvider::setIntervalMs(int ms) {
-    m_intervalMs = qBound(100, ms, 5000);
-    m_timer->setInterval(m_intervalMs);   // applies immediately
-    emit settingsChanged();
+Q_PROPERTY(double load READ load NOTIFY changed)
+Q_PROPERTY(QList<double> history READ history NOTIFY changed)
+Q_PROPERTY(QString level READ level NOTIFY levelChanged)
+Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)
+signals:
+    void alarmRaised(const QString &level, const QString &message);
+```
+
+Three decisions are worth a look:
+
+1. **One signal for the measurements.** `load`, `temperature`, `requests` and `history` change together, so one signal `changed()` serves all of them. `advance()` first sets **all** values and then sends the signal, so no binding sees half of a measurement (the new load with the old temperature).
+2. **State and event are different things.** `level` is a **state**: a property with a signal, and the cards bind to it. `alarmRaised` is an **event**: it happens once, when the level gets **worse**, and it carries a message. The test counted: no alarm when the level gets better, and exactly one alarm for each step to a worse level.
+3. **The limits are in the class.** `setInterval` keeps the value between 100 and 2000 ms (`qBound`), whatever the QML code writes. A slider can be wrong; the backend must not depend on it.
+
+`advance()` is an ordinary `Q_INVOKABLE` function. The timer calls it, the button "One step" calls it, and the test calls it. **Code that can be called directly is easy to test.**
+
+`QML_ELEMENT` registers the class, so QML creates it like any element:
+
+```qml
+Dashboard {
+    id: dashboard
+    interval: intervalSlider.value
+    Component.onCompleted: running = true
 }
 ```
 
+`interval: intervalSlider.value` is a binding on a C++ property (lesson 12), and the slider drives the timer.
+
+A text like `"warning"` is simple, but a typo (`"warnning"`) is found only at run time. A real program would use an `enum class` with `Q_ENUM` (see the Qt documentation for `Q_ENUM`) so that QML writes `Dashboard.Warning`.
+
 ---
 
-## 11. Reusable Components
-
-Both `MetricCard` and `ChartCanvas` are reusable QML components.
-Used like custom HTML elements:
+## 3. MetricCard: A Number That Counts
 
 ```qml
-// MetricCard used 3 times with different properties
-MetricCard {
-    title:       "CPU Load"
-    value:       dataProvider.cpuLoad
-    unit:        "%"
-    maxValue:    100
-    accentColor: dataProvider.cpuLoad > 80 ? "#c62828" : "#1565c0"
-    icon:        "💻"
-}
-
-// ChartCanvas used 3 times
-ChartCanvas {
-    title:     "CPU Load (%)"
-    data:      dataProvider.cpuHistory
-    maxValue:  100
-    lineColor: "#1565c0"
-    fillColor: "#e3f2fd"
-}
+property real value: 0
+property real shown: value
+Behavior on shown { NumberAnimation { duration: 400; easing.type: Easing.OutCubic } }
+...
+text: card.shown.toFixed(card.decimals) + " " + card.unit
 ```
 
-Each component is a separate `.qml` file — same concept as
-a C++ class. Define once, reuse everywhere.
+`value` is the truth, `shown` is the picture. When `value` changes, `shown` runs to it in 400 ms, and the text follows `shown`. This is the pattern for every number that should not jump. In a test use `tryCompare(card, "shown", 75.9)` to wait for the end of the animation.
+
+The colours are **states** (lesson 08):
+
+```qml
+states: [
+    State { name: "warning";  when: card.level === "warning"
+            PropertyChanges { target: card; color: "#fff4d6"; border.color: "#e0a800" } },
+    State { name: "critical"; when: card.level === "critical"; ... }
+]
+transitions: Transition { ColorAnimation { duration: 300 } }
+```
+
+The card knows only a `level` text. It does not know the backend, so the same card works for any data. Look at `Main.qml`: all three cards bind `level: dashboard.level`.
 
 ---
 
-## 12. Alert System — Animated Overlay
+## 4. BarChart: Make the Bars Once
 
-The alert banner slides down from the top when CPU exceeds threshold:
+The history changes at every measurement. If the `Repeater` used the list itself as its model, QML would **destroy and create all bars** at every measurement, and no animation could run. So the model is a **number**:
 
 ```qml
-Rectangle {
-    height: dataProvider.hasAlert ? 60 : 0  // binding drives height
-
-    // Smooth height animation
-    Behavior on height {
-        NumberAnimation { duration: 300; easing.type: Easing.OutCubic }
+Repeater {
+    model: chart.capacity            // 24 delegates, made once
+    delegate: Item {
+        required property int index
+        readonly property real v: index >= offset ? chart.values[index - offset] : 0
+        ...
+        Rectangle { height: chart.height * slot.v / chart.maximum
+                    Behavior on height { NumberAnimation { duration: 250 } } }
     }
-
-    visible: height > 0  // hide when fully collapsed
 }
 ```
 
-When `dataProvider.hasAlert` becomes `true`:
-- Height animates from 0 → 60 (slides down)
-- When dismissed → height animates back to 0 (slides up)
-- `visible: height > 0` prevents invisible element from capturing clicks
+Each delegate reads **its** value, and the `Behavior` animates the height. The newest value is at the right; while there are fewer values than bars (at the start), the left bars stay empty (the test checks that the first bar is empty and the last bar is not, after seven steps). The bar colour follows two limits, `warningAt` and `criticalAt`, which are properties of the chart.
+
+If you need to add, remove and move single entries, a model class (lesson 14) is the better tool. For a fixed number of slots, this is shorter.
 
 ---
 
-## 13. Build & Run
+## 5. The Alarm Message
 
-**Install QML modules first:**
-```bash
-sudo apt install \
-  qml6-module-qtquick \
-  qml6-module-qtquick-controls \
-  qml6-module-qtquick-layouts \
-  qml6-module-qtquick-templates \
-  qml6-module-qtquick-window
+```qml
+Connections {
+    target: dashboard
+    function onAlarmRaised(level, message) {
+        toastText.text = message
+        toast.accent = level === "critical" ? "#c0392b" : "#e0a800"
+        toastAnimation.restart()
+    }
+}
+SequentialAnimation {
+    id: toastAnimation
+    NumberAnimation { target: toast; property: "opacity"; to: 1; duration: 150 }
+    PauseAnimation  { duration: 1800 }
+    NumberAnimation { target: toast; property: "opacity"; to: 0; duration: 400 }
+}
 ```
 
-**In Qt Creator:**
-1. Copy all files into `qt_qml_dashboard/` project folder
-2. Right-click → **Run CMake**
-3. `Ctrl+B` then `Ctrl+R`
-
-**From terminal:**
-```bash
-mkdir build && cd build
-cmake ..
-cmake --build .
-./app
-```
+An event from C++ (lesson 13) starts an animation in QML. `restart()` means: a new alarm while the old message is still visible starts the three steps again.
 
 ---
 
-## 14. What This Covers
+## 6. Build and Run
 
-| Concept | Where |
-|---|---|
-| `TabBar` + `SwipeView` navigation | `Main.qml` |
-| Alert overlay with slide animation | `Main.qml` |
-| `Behavior { NumberAnimation }` | `MetricCard.qml` |
-| `Behavior { ColorAnimation }` | `MetricCard.qml`, `SettingsPage.qml` |
-| `Canvas` arc drawing — gauge | `MetricCard.qml` |
-| `Canvas` line chart with fill | `ChartCanvas.qml` |
-| `SequentialAnimation` | `AboutPage.qml` |
-| `ParallelAnimation` | `AboutPage.qml` |
-| `RotationAnimation` infinite loop | `AboutPage.qml` |
-| Reusable QML components | `MetricCard`, `ChartCanvas` |
-| Two-way binding — Slider → C++ | `SettingsPage.qml` |
-| `QVariantList` for chart history | `DataProvider` |
-| `Connections` in reusable component | `ChartCanvas.qml` |
-| `Q_INVOKABLE` called from QML | `start()`, `stop()`, `reset()` |
-| Alert system with threshold | `DataProvider::checkAlerts()` |
+```bash
+cmake -S . -B build
+cmake --build build
+./build/app19_project_dashboard
+```
+
+You can also open `CMakeLists.txt` in Qt Creator, choose a kit and press **Run**.
+
+Try this:
+
+1. Let it run. Watch the cards change colour when the load goes above 60 and 85, and read the messages.
+2. Switch "Live" off and use "One step". Press "Reset".
+3. Move the slider to 100 ms and to 2000 ms. What happens to the animation of the cards (400 ms) at 100 ms?
+4. Add a fourth card, "Errors", with a new property `errors` in `Dashboard` (a number that grows when the level is critical).
+5. Change the thresholds of the level: make them properties of `Dashboard` (`warningAt`, `criticalAt`) with a `NOTIFY`, and bind the `BarChart` to them (`warningAt: dashboard.warningAt`).
+6. Make `Dashboard` write each measurement into a file (`QFile`, chapter `10_IO_and_Data`) in `advance()`.
+7. Replace the bar chart by a `ListView` of the last ten measurements with a model class (lesson 14).
+
+---
+
+## 7. Common Problems
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| `Dashboard is not a type` | The class is not in `SOURCES`, or has no `QML_ELEMENT` | Check `CMakeLists.txt` and the class (needs `Q_OBJECT`, `QML_ELEMENT`, `#include <QtQml/qqmlregistration.h>`) |
+| The numbers jump (no animation) | The `Behavior` is on `value` of a read-only binding, or missing | Put the `Behavior` on the property that the text shows (`shown`) |
+| All bars jump at every measurement | The list is the model of the `Repeater`, so all bars are made again | Use a number as the model, as here |
+| A binding does not update | The property has no `NOTIFY`, or the signal is not sent | Send the signal after every change |
+| The animation is cut at a short interval | The animation (400 ms) is longer than the interval (100 ms) | Animations restart from the current value; shorten them or limit the interval |
+| The window is empty at the start | `running` was set before the engine loaded the QML | Set it in `Component.onCompleted`, as here |
+| The alarm message stays | `restart()` is called before the old animation ended, and the pause is long | Use `restart()` as here; shorten the `PauseAnimation` |
+| A test is flaky | It waits for a timer | Call `advance()` directly, as the tests of this lesson do |
+
+---
+
+## 8. Reference
+
+| Topic | Where to look |
+|-------|---------------|
+| Exposing C++ to QML | <https://doc.qt.io/qt-6/qtqml-cppintegration-definetypes.html> |
+| `Q_PROPERTY` | <https://doc.qt.io/qt-6/properties.html> |
+| `QTimer` | <https://doc.qt.io/qt-6/qtimer.html> |
+| `Behavior`, `NumberAnimation`, `SequentialAnimation` | <https://doc.qt.io/qt-6/qml-qtquick-behavior.html>, <https://doc.qt.io/qt-6/qml-qtquick-sequentialanimation.html> |
+| `State`, `Transition` | <https://doc.qt.io/qt-6/qml-qtquick-state.html>, <https://doc.qt.io/qt-6/qml-qtquick-transition.html> |
+| `Repeater` | <https://doc.qt.io/qt-6/qml-qtquick-repeater.html> |
+| `Connections` | <https://doc.qt.io/qt-6/qml-qtqml-connections.html> |
+| Module | Qt Quick (`find_package(Qt6 REQUIRED COMPONENTS Quick)`) |
+| Headers | `<QObject>`, `<QTimer>`, `<QList>`, `<QtQml/qqmlregistration.h>` |
+| Imports | `import QtQuick`, `import QtQuick.Controls`, `import QtQuick.Layouts` |
+| Minimum Qt version | Qt 6.8 |
